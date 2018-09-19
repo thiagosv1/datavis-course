@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Carregando dados de arquivo</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 
@@ -45,7 +45,7 @@
             return a.Worldwide_Gross_M - b.Worldwide_Gross_M;
         };
 
-        d3.json("data/movies.json").then(function(json){ 
+        d3.json("../data/movies.json").then(function(json){ 
             render(json, comparePorBilheteria);
         });
     </script>
@@ -81,7 +81,7 @@
             return a.Budget_M - b.Budget_M;
         };
 
-        d3.json("data/movies.json").then(function(json){ 
+        d3.json("../data/movies.json").then(function(json){ 
             render2(json, comparePorOrcamento);
         });
     </script>
@@ -116,7 +116,7 @@
             return (a.Worldwide_Gross_M-a.Budget_M) - (b.Worldwide_Gross_M-b.Budget_M);
         };
 
-        d3.json("data/movies.json").then(function(json){ 
+        d3.json("../data/movies.json").then(function(json){ 
             render3(json, comparePorLucro);
         });
     </script>
