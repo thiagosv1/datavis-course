@@ -11,6 +11,19 @@
 [index09.html](basic/index09.html)<br>
 [index10.html](basic/index10.html)<br>
 
+## Aula do dia 05/09/2018
+
+[aula 09](basic/d3_intro/movies_d3.html)<br>
+
+
+## Aula do dia 12/09/2018
+
+[aula 11](basic/d3_scale/01_scatterplot.html)<br>
+
+## Aula do dia 12/09/2018
+
+[aula 17](basic/d3_update/01_scatterplot.html)<br>
+
 ---
 
 Para saber mais sobre a sintaxe markdown, veja [este guia](https://guides.github.com/features/mastering-markdown/).
