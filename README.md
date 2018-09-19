@@ -18,7 +18,7 @@
 
 ## Aula do dia 12/09/2018
 
-[aula 11](basic/d3_scale/01_scatterplot.html)<br>
+[aula 11](basic/d3_scale/movies_scatter.html)<br>
 
 ## Aula do dia 12/09/2018
 
