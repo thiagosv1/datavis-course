@@ -13,17 +13,21 @@
 
 ## Aula do dia 05/09/2018
 
-[aula 09](basic/d3_intro/movies_d3.html)<br>
+[Aula 09](basic/d3_intro/movies_d3.html)<br>
 
 
 ## Aula do dia 12/09/2018
 
-[aula 11](basic/d3_scale/movies_scatter.html)<br>
+[Aula 11](basic/d3_scale/movies_scatter.html)<br>
 
 ## Aula do dia 12/09/2018
 
-[aula 17](basic/d3_update/01_scatterplot.html)<br>
+[aula 12](basic/d3_update/01_scatterplot.html)<br>
 
+## Aula do dia 24/09/2018
+
+[aula 14](basic/d3_crossfilter/acoes.html)<br>
+[aula 14](basic/d3_crossfilter/movies_d3_dc.html)<br>
 ---
 
 Para saber mais sobre a sintaxe markdown, veja [este guia](https://guides.github.com/features/mastering-markdown/).

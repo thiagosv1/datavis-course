@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Valores das ações da Tesla e do Facebook</title>
+    <link rel="stylesheet" href="../css/dc.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="js/crossfilter.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/dc.min.js"></script>
+
+</head>
+<body>
+    <div>
+       <div style="position: absolute;top: 0%"><h1> Valores das ações da Tesla e do Facebook</h1>
+            <div id="chart"></div>
+       </div>
+    </br>
+    </br>
+       <div style="position: absolute;top: 55%"><h1> Valores das ações da Tesla e do Facebook</h1>
+            <div id="chart2"></div>
+       </div>
+    </div>
+
+<script type="text/javascript">
+    let compositeChart1 = dc.compositeChart('#chart');
+    let compositeChart2 = dc.compositeChart('#chart2');
+
+    d3.csv("data/stocks.csv").then(function(data){
+            // formatando nossos dados
+            let parseDate = d3.timeParse("%Y/%m/%d");
+            data.forEach(function(d){
+                d.date = parseDate(d.date);
+                d.tesla = +d.tesla;
+                d.facebook = +d.facebook;
+            });
+
+            //criando um crossfilter
+            let facts = crossfilter(data);
+
+            let dateDim = facts.dimension(function(d){
+                return d.date;
+            });
+
+            let percentFacebook = dateDim.bottom(1)[0].facebook;
+
+            let percetTesla = dateDim.bottom(1)[0].tesla;
+
+            let percentFacebook1 = dateDim.bottom(1)[0].facebook;
+
+            let percetTesla1 = dateDim.bottom(1)[0].tesla;
+
+            // Valores das ações da Tesla e do Facebook calculo normal
+
+            let teslaByDayGroup = dateDim.group().reduceSum(function(d){
+                return d.tesla;
+            });
+
+            let fbByDayGroup = dateDim.group().reduceSum(function(d){
+                return d.facebook;
+            });
+
+            // Valores das ações da Tesla e do Facebook calculo alterado
+
+            let teslaByDayGroup1 = dateDim.group().reduceSum(function(d){
+                return ((d.tesla - percetTesla) / percetTesla) * 100;
+            });
+
+            let fbByDayGroup1 = dateDim.group().reduceSum(function(d){
+                return ((d.facebook - percentFacebook) / percentFacebook) * 100;
+            });
+            
+
+            let xScale = d3.scaleTime()
+            .domain([dateDim.bottom(1)[0].date, dateDim.top(1)[0].date]);
+
+            compositeChart1.width(800)
+            .height(400)
+            .margins({top: 50, right: 50, bottom: 25, left: 40})
+            .dimension(dateDim)
+            .x(xScale)
+            .xUnits(d3.timeDays)
+            .renderHorizontalGridLines(true)
+            .legend(dc.legend().x(700).y(5).itemHeight(13).gap(5))
+            .brushOn(false)    
+            .compose([
+                dc.lineChart(compositeChart1)
+                .group(teslaByDayGroup, 'Tesla')
+                .ordinalColors(['steelblue']),
+                dc.lineChart(compositeChart1)
+                .group(fbByDayGroup, 'Facebook')
+                .ordinalColors(['darkorange'])]);
+
+            compositeChart2.width(800)
+            .height(400)
+            .margins({top: 50, right: 50, bottom: 25, left: 40})
+            .dimension(dateDim)
+            .x(xScale)
+            .xUnits(d3.timeDays)
+            .renderHorizontalGridLines(true)
+            .legend(dc.legend().x(700).y(5).itemHeight(13).gap(5))
+            .brushOn(false)    
+            .compose([
+                dc.lineChart(compositeChart2)
+                .group(teslaByDayGroup1, 'Tesla')
+                .ordinalColors(['steelblue']),
+                dc.lineChart(compositeChart2)
+                .group(fbByDayGroup1, 'Facebook')
+                .ordinalColors(['darkorange'])]);
+
+            dc.renderAll();
+
+        });
+    </script>           
+</body>
+</html>

@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Gráficos DC</title>
+    <link rel="stylesheet" href="dc.css">
+    <script src="crossfilter.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="dc.js" charset="utf-8"></script>
+
+</head>
+<body>
+    <div id="chart"><span> </span></div>
+    <div id="chart1"><span></span></div>
+	<script type="text/javascript">
+        var barChart = dc.barChart('#chart');
+        var barChart1 = dc.barChart('#chart1');
+		d3.json("../data/movies.json", function(data){
+			// formatando nossos dados
+           
+
+           //criando um crossfilter
+            var facts = crossfilter(data);
+            var facts1 = crossfilter(data);
+
+            var dateDim = facts.dimension(function(d){
+                return d.Year;
+            });
+
+	       var genreDim = facts1.dimension(function(d){
+                return d.Genre;
+            });
+
+            var Worldwide_Gross_MGroup = dateDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+
+            var Worldwide_Gross_MGroup1 = genreDim.group().reduceSum(function(d){
+                return d.Worldwide_Gross_M;
+            });
+
+            barChart
+		     .width(420)
+                     .height(180)
+                     .margins({top: 10, right: 50, bottom: 30, left: 40})
+                     .dimension(dateDim)
+                     .group(Worldwide_Gross_MGroup)
+                     .x(d3.scale.linear().domain([dateDim.bottom(1)[0].Year+0.5,dateDim.top(1)[0].Year+0.5]))
+                     .yAxisLabel("Bilheteria por ano")
+                     .gap(10) 
+                     .centerBar(true)
+                     .brushOn(false)
+                     .xAxis().tickFormat(d3.format("d"))
+                     
+
+
+           barChart1
+		     .width(420)
+                     .height(180)
+                     .margins({top: 10, right: 50, bottom: 30, left: 40})
+                     .dimension(genreDim)
+                     .x(d3.scale.ordinal().domain(data.map(function(d){return d.Genre})))
+		     .xUnits(dc.units.ordinal)
+             .yAxisLabel("Bilheteria por gênero")
+                     .group(Worldwide_Gross_MGroup1)
+		     .renderHorizontalGridLines(true)
+                     .brushOn(false);
+                     
+
+            
+
+            dc.renderAll();
+
+		});
+	</script>			
+</body>
+</html>
