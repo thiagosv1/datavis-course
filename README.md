@@ -33,6 +33,11 @@
 
 [aula 15](basic/d3_crossfilter_2/earthquakes.html)<br>
 
+
+## Aula do dia 03/09/2018
+
+[aula 17](basic/d3_crossfilter_2/chicago.html)<br>
+
 ---
 
 
