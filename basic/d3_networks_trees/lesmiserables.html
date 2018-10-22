@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Os miseráveis</title>
+    
+    <!--<link rel="stylesheet" href="css/reset.css">-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+  </head>
+  
+  <body>
+
+    <main role="main" class="container">
+      <header>
+      <h1 ALIGN="center">Visualização de "Os miseráveis"</h1>
+      </header>
+
+      <div id="main" role="main">
+        <div id="vis">
+        </div>
+      </div>
+    </main> 
+
+    <!-- Bootstrap javascript files -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    
+    <script>
+        
+        const width = 1080;
+        const height = 800;
+        
+        // Create svg element inside #vis element and attribute it to the vis variable
+        let vis = d3.select('#vis')
+                    .append('svg')
+                    .attr('width', width)
+                    .attr('height', height)
+                    .attr("viewBox", [-width / 2, -height / 2, width, height]);
+
+        // Read the contents of data/songs.json file and process it as a graph variable
+        d3.json("data/lesmiserables.json").then(function(graph) {
+            // Set the nodes and links
+            const nodes = graph.nodes;
+            const links = graph.links;
+            
+           // create simulation constant using the forceSimulation function defined down below
+           const simulation = forceSimulation(nodes, links).on("tick", ticked);
+           // create link svg elements
+           
+           const link = vis.append("g")
+              .selectAll("line")
+              .data(links)
+              .enter()
+              .append("line")
+              .attr("class", "link");
+
+           // create node svg elements
+           let countLinks = function(nodes) {
+              let numberOfLinks = 0;
+              links.forEach(l => {
+                if(nodes.id == l.source.id || nodes.id == l.target.id){
+                  numberOfLinks += l.value;
+                }
+              });
+              return numberOfLinks;
+            };
+
+            let range = d3.scaleSqrt().domain([0,50]).range([1, 20]);
+            
+            let getCircleRadius = function(nodes) {
+                return range(countLinks(nodes));
+            };
+            
+            let colorScale = d3.scaleOrdinal()
+              .domain([0,1,2,3,4,5,6,7,8,9,10])
+              .range(["#FF6347", "#008B8B", "#00FF00", "#696969", "#4B0082", "#FF00FF", "#46f0f0", "#f032e6", "#FF4500", "#800000", "#FFD700"]);
+
+           const node = vis.append("g")
+              .selectAll("cirlce")
+              .data(nodes)
+              .enter()
+              .append("circle")
+              .attr("fill", d => colorScale(d.group))
+              .attr("class", "node")
+              .attr("r", getCircleRadius)
+              .call(drag(simulation));
+
+           // define function ticked
+           function ticked() {
+            link.attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+            node.attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .append("title")
+                .text(function (d) {return d.id + ": " + countLinks(d);});
+            }
+
+            function updateLinks() {
+              //select all link elements in svg group of nodes
+              link = linksG.selectAll("line.link")
+                .data(allData.links, function(d) {
+                return `${d.source.id}_${d.target.id}`; });
+                link.enter()
+                .append("line")
+                .attr("class", "link")
+                .attr("stroke", "#ddd").attr("stroke-opacity", 0.8)
+                .attr("x1", function(d) {
+                return d.source.x; })
+                .attr("y1", function(d) {
+                return d.source.y; })
+                .attr("x2", function(d) {
+                return d.target.x; })
+                .attr("y2", function(d) {
+                return d.target.y; })
+                .append("title")
+                .text(function (d) {return d.id + ": " + countLinks(d);});
+          }
+
+          // define function drag
+          function drag(simulation){
+            function dragstarted(d) {
+              if (!d3.event.active) 
+                simulation.alphaTarget(0.3)
+                          .restart();
+              d.fx = d.x;
+              d.fy = d.y;
+            }
+            function dragged(d) {
+              d.fx = d3.event.x;
+              d.fy = d3.event.y;
+            }
+            function dragended(d) {
+              if (!d3.event.active)
+               simulation
+              .alphaTarget(0);
+              
+              d.fx = null;
+              d.fy = null;
+            }
+            return d3.drag()
+                      .on("start", dragstarted)
+                      .on("drag", dragged)
+                      .on("end", dragended);
+          }
+          // define the forceSimulation function that will receive nodes and links and 
+          // will return a d3.forceSimulation() object 
+
+          function forceSimulation(nodes, links) {
+              return d3.forceSimulation(nodes)
+                .force("link", d3.forceLink(links).id(d => d.id).distance(60))
+                .force("charge", d3.forceManyBody().strength(-80).distanceMax(300))
+                .force("center", d3.forceCenter());
+          }
+        });
+        
+    </script>
+  </body>
+</html>

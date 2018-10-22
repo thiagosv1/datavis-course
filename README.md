@@ -38,6 +38,11 @@
 
 [aula 17](basic/d3_crossfilter_2/chicago.html)<br>
 
+## Aula do dia 10/10/2018
+
+[aula 19](basic/d3_networks_trees/songs.html)<br>
+[aula 19](basic/d3_networks_trees/lesmiserables.html)<br>
+
 ---
 
 
