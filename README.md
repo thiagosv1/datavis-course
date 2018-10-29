@@ -43,6 +43,12 @@
 [aula 19](basic/d3_networks_trees/songs.html)<br>
 [aula 19](basic/d3_networks_trees/lesmiserables.html)<br>
 
+## Aula do dia 24/10/2018
+
+[aula 21](basic/color-d3/usa.html)<br>
+[aula 21](basic/color-d3/crimes.html)<br>
+
+
 ---
 
 
