@@ -48,6 +48,10 @@
 [aula 21](basic/color-d3/usa.html)<br>
 [aula 21](basic/color-d3/crimes.html)<br>
 
+## Aula do dia 31/10/2018
+
+[aula 23](basic/d3_interactive/usa.html)<br>
+[aula 23](basic/d3_interactive/earthquakes.html)<br>
 
 ---
 
