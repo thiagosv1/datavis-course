@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Análise de Emprestimos</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dc.css"/>
+ 
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">EMPRÉSTIMOS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="index.html">Início</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="com_emprestimo.html">Sevidores com Empréstimos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="sem_emprestimo.html">Sevidores sem Empréstimos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="emprestimos.html">Empréstimos por Período</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header  class="test" style="background-image: url('img/home-bg.jpg')">
+      <div class="container text-center">
+        <h1>PERFIL DE CRÉDITO</h1>
+        <p class="lead">Empréstimos Realizados pelos Servidores Públicos do Estado de Santa Catarina</p>
+        <p><img src="Bandeira_de_Santa_Catarina.svg.png" width="64" height="44" class="d-inline-block align-top" alt="Bandeira do Estado de Santa Catarina.">&nbsp;&nbsp; </p>
+      </div>
+    </header>
+    
+    <div class="container-fluid">
+      <div class="row">
+          <div class="col-lg-11 mx-auto">
+            <h2>Perfil dos Servidores com Empréstimos</h2>
+             <p align="justify">Os gráficos de pizza a seguir mostram respectivamente a aplicação dos filtros selecionados por, “ano de contratação do empréstimo", “sexo” (masculino/femino) e pela “aposentadoria" (sim/não), interpolados dinamicamente com os dados da distribuição de servidores públicos, pelo “setor”, pela “faixa salarial” e pelo “tipo do empréstimo”, conforme observa-se nos gráficos de barras, logo abaixo.</p>
+             <p>&nbsp;&nbsp;</p>
+          </div>
+      </div>       
+      <div class="row">
+        <div class="col-sm">
+              <!-- titulo do grafico-->   
+        <div class="mx-auto" style="text-align: center;">
+            <h6><b>Ano</b></h6>
+          </div>
+          <div id="contratosPorAno" style="text-align: center;">
+            <div class="reset" style="visibility: hidden;">Selecionado: <span class="filter"></span>
+              <a href="javascript:contratosPorAno.filterAll();dc.redrawAll();">reset</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+              <!-- titulo do grafico-->   
+        <div class="mx-auto" style="text-align: center;">
+            <h6><b>Sexo</b></h6>
+          </div>
+          <div id="contratosPorSexo" style="text-align: center;">
+            <div class="reset" style="visibility: hidden;">Selecionado: <span class="filter"></span>
+                <a href="javascript:contratosPorSexo.filterAll();dc.redrawAll();">reset</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+              <!-- titulo do grafico-->   
+        <div class="mx-auto" style="text-align: center;">
+            <h6><b>Aposentado</b></h6>
+          </div>
+          <div id="contratosPorAposentadoria" style="text-align: center;">
+            <div class="reset" style="visibility: hidden;">Selecionado: <span class="filter"></span>
+                <a href="javascript:contratosPorAposentadoria.filterAll();dc.redrawAll();">reset</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm">
+          <div id="contratosPorCargo" style="text-align: center;">
+            <span class="reset" style="display: none;">Faixa: <span class="filter"></span></span>
+                  <a class="reset" href="javascript:contratosPorCargo.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div id="contratosPorSalario" style="text-align: center;">
+            <span class="reset" style="display: none;">Faixa: <span class="filter"></span></span>
+                  <a class="reset" href="javascript:contratosPorSalario.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div id="contratosPorEmprestimo" style="text-align: center;">
+            <span class="reset" style="display: none;">Faixa: <span class="filter"></span></span>
+                  <a class="reset" href="javascript:contratosPorEmprestimo.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white"></p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+
+
+<script type="text/javascript" src="js/d3.v5.min.js"></script>
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+
+
+<script type="text/javascript">
+  var contratosPorCargo = dc.barChart('#contratosPorCargo');
+  var contratosPorSalario = dc.barChart('#contratosPorSalario');
+  var contratosPorEmprestimo = dc.barChart('#contratosPorEmprestimo');
+  var contratosPorAno   = dc.pieChart("#contratosPorAno");
+  var contratosPorSexo   = dc.pieChart("#contratosPorSexo");
+  var contratosPorAposentadoria   = dc.pieChart("#contratosPorAposentadoria");
+
+  d3.csv('data/dataset4.csv').then(function(data) {
+      var ndx            = crossfilter(data);
+      var dateFormatSpecifier = '%d/%m/%Y';
+      var dateFormatParser = d3.timeParse(dateFormatSpecifier);
+      data.forEach(function (d) {
+        d.dd = dateFormatParser(d.data_averbacao);
+        d.ano = d3.timeYear(d.dd).getFullYear(); // pre-calculate month for better performance
+      });
+
+      ano  = ndx.dimension(function(d) {return d.ano;});
+      groupAno = ano.group().reduceSum(function(d) {
+        if(+d.qtd_contratos >0)
+         return 1;
+        else
+          return 0;
+      });;
+      contratosPorAno
+          .width(270)
+          .height(270)
+          .dimension(ano)
+          .group(groupAno)
+          .slicesCap(4)
+          //.innerRadius(50)
+          //.externalLabels(50)
+          //.externalRadiusPadding(50)
+          ///.drawPaths(true)
+          .controlsUseVisibility(true)
+          .on('pretransition', function(chart) {
+                chart.selectAll('text.pie-slice').text(function(d) {
+                    return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+                })
+            });
+
+      sexo  = ndx.dimension(function(d) {return d.Sexo;});
+      groupSexo = sexo.group().reduceSum(function(d) {
+        if(+d.qtd_contratos >0)
+         return 1;
+        else
+          return 0;
+      });
+      contratosPorSexo
+          .width(270)
+          .height(270)
+          .dimension(sexo)
+          .group(groupSexo)
+          //.slicesCap(4)
+          //.innerRadius(50)
+          //.externalLabels(5)
+          //.externalRadiusPadding(50)
+          //.drawPaths(true)
+          .controlsUseVisibility(true)
+          .on('pretransition', function(chart) {
+                chart.selectAll('text.pie-slice').text(function(d) {
+                    return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+                })
+            });
+
+      aposentado  = ndx.dimension(function(d) {return d.Aposentado;});
+      groupAposentado = aposentado.group().reduceSum(function(d) {
+        if(+d.qtd_contratos >0)
+         return 1;
+        else
+          return 0;
+      });
+      contratosPorAposentadoria
+          .width(270)
+          .height(270)
+          .dimension(aposentado)
+          .group(groupAposentado)
+          .slicesCap(4)
+          //.innerRadius(50)
+          //.externalLabels(10)
+          //.externalRadiusPadding(50)
+          //.drawPaths(true)
+          .controlsUseVisibility(true)
+          .on('pretransition', function(chart) {
+                chart.selectAll('text.pie-slice').text(function(d) {
+                    return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+                })
+            });
+
+      salario  = ndx.dimension(function(d) {return d.total_proventos;});
+      groupSalario = salario.group().reduceSum(function(d) {
+        if(+d.qtd_contratos >0)
+         return 1;
+        else
+          return 0;
+      });
+      
+      // PARA ALTERAR O TAMANHO DO GRAFICO, ALTERA AQUI NESSA LINHA.
+      //
+      //  
+      
+      contratosPorSalario.width(400)
+          //.height(300)
+          .margins({top: 10, right: 30, bottom: 40, left:50})
+          .xAxisLabel('Salário')
+          .yAxisLabel('Qtde. Servidores')
+          .dimension(salario)
+          .group(groupSalario)
+          .transitionDuration(500)
+          .centerBar(true)
+          .gap(1)
+          .x(d3.scaleLinear().domain([0, 10000]))
+          .elasticY(true)
+
+      var cargo = ndx.dimension(function(d) {
+          return d.Cargo;
+      });
+      var  groupCargo      = cargo.group().reduceSum(function(d) {
+        if(+d.qtd_contratos >0)
+         return 1;
+        else
+          return 0;
+      });
+      contratosPorCargo
+          .width(400)
+          //.height(300)
+          .margins({top: 10, right: 30, bottom: 40, left:50})
+          .x(d3.scaleBand())
+          .xUnits(dc.units.ordinal)
+          //.brushOn(false)
+          .xAxisLabel('Cargo')
+          .yAxisLabel('Qtde. Servidores')
+          .dimension(cargo)
+          .barPadding(0.1)
+          .outerPadding(0.05)
+          .group(groupCargo);
+
+      var emprestimo = ndx.dimension(function(d) {
+          return d.Emprestimo;
+      });
+      var  groupEmprestimo      = emprestimo.group().reduceSum(function(d) {
+        if(+d.qtd_contratos >0)
+         return 1;
+        else
+          return 0;
+      });
+      contratosPorEmprestimo
+          .width(450)
+          //.height(300)
+          .margins({top: 10, right: 30, bottom: 40, left:50})
+          .x(d3.scaleBand())
+          .xUnits(dc.units.ordinal)
+          //.brushOn(false)
+          .xAxisLabel('Tipo de Empréstimo')
+          .yAxisLabel('Qtde. Servidores')
+          .dimension(emprestimo)
+          .barPadding(0.1)
+          .outerPadding(0.05)
+          .group(groupEmprestimo);
+
+      dc.renderAll();
+  });
+
+</script>
+
+
+  
+  </body>
+
+</html>

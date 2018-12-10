@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Análise de Emprestimos</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/dc.css"/>
+ 
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+      <div class="container center-align">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">EMPRÉSTIMOS</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="index.html">Início</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="com_emprestimo.html">Sevidores com Empréstimos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="sem_emprestimo.html">Sevidores sem Empréstimos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="emprestimos.html">Empréstimos por Período</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header  class="test" style="background-image: url('img/home-bg.jpg')">
+      <div class="container text-center">
+        <h1>PERFIL DE CRÉDITO</h1>
+        <p class="lead"> Empréstimos Realizados pelos Servidores Públicos do Estado de Santa Catarina</p>
+        <p><img src="Bandeira_de_Santa_Catarina.svg.png" width="64" height="44" class="d-inline-block align-top" alt="Bandeira do Estado de Santa Catarina.">&nbsp;&nbsp; </p>
+      </div>
+    </header>
+    
+    <div class="container-fluid">
+      <div class="row">
+          <div class="col-lg-11 mx-auto">
+            <h2>Emprétimos por Período</h2>
+             <p align="justify">O gráfico de pizza a seguir mostra a aplicação dos filtros selecionados por, “ano de contratação do empréstimo" interpolado dinamicamente com a quantidade de empréstimos, conforme observa-se no gráfico de barras, logo abaixo.</p>
+             <p>&nbsp;&nbsp;</p>
+          </div>
+      </div>       
+      <div class="row">
+        <div class="col-sm">
+              <!-- titulo do grafico-->   
+        <div class="mx-auto" style="text-align: center;">
+            <h6><b>Ano</b></h6>
+          </div>
+          <div id="contratosPorAno" style="text-align: center;">
+            <div class="reset" style="visibility: hidden;">Selecionado: <span class="filter"></span>
+              <a href="javascript:contratosPorAno.filterAll();dc.redrawAll();">reset</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+              <!-- titulo do grafico-->   
+        <div class="mx-auto" style="text-align: center;">
+            <h6><b>Empréstimos Realizados</b></h6>
+          </div>
+          <div id="lineChart" style="text-align: center;">
+            <div class="reset" style="visibility: hidden;">Selecionado: <span class="filter"></span>
+                <a href="javascript:lineChart.filterAll();dc.redrawAll();">reset</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white"></p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+
+
+<script type="text/javascript" src="js/d3.v5.min.js"></script>
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+
+
+<script type="text/javascript">
+  var contratosPorAno   = dc.pieChart("#contratosPorAno");
+  var lineChart = dc.lineChart('#lineChart');
+  
+
+  d3.csv('data/dataset4.csv').then(function(data) {
+      var ndx            = crossfilter(data);
+      var dateFormatSpecifier = '%d/%m/%Y';
+      var dateFormatParser = d3.timeParse(dateFormatSpecifier);
+      data.forEach(function (d) {
+        d.dd = dateFormatParser(d.data_averbacao);
+        d.ano = d3.timeYear(d.dd).getFullYear(); // pre-calculate month for better performance
+      });
+
+      ano  = ndx.dimension(function(d) {return d.ano;});
+      groupAno = ano.group().reduceSum(function(d) {
+        if(+d.qtd_contratos >0)
+         return 1;
+        else
+          return 0;
+      });;
+      contratosPorAno
+          .width(400)
+          .height(400)
+          .dimension(ano)
+          .group(groupAno)
+          .slicesCap(4)
+          //.innerRadius(50)
+          //.externalLabels(50)
+          //.externalRadiusPadding(50)
+          //.drawPaths(true)
+          .controlsUseVisibility(true)
+          .on('pretransition', function(chart) {
+                chart.selectAll('text.pie-slice').text(function(d) {
+                    return d.data.key + ' ' + dc.utils.printSingleValue((d.endAngle - d.startAngle) / (2*Math.PI) * 100) + '%';
+                })
+            });
+
+
+      let parseDate = d3.timeParse("%d/%m/%Y");
+            data.forEach(function(d){
+                d.date = parseDate(d.data_averbacao);
+            });
+
+      let dateDim = ndx.dimension(function(d){
+          return d.date;
+      });
+      let dataByDayGroup = dateDim.group().reduceSum(function(d){
+          if(+d.qtd_contratos == 0)
+              return 1;
+            else
+              return 0;
+      });
+      let xScale = d3.scaleTime()
+                           .domain([dateDim.bottom(1)[0].date, dateDim.top(1)[0].date]);
+      lineChart.width(800)
+          .height(400)
+          .margins({top: 30, right: 50, bottom: 25, left: 80})
+          .dimension(dateDim)
+          .x(xScale)
+          .xUnits(d3.timeDays)
+          .renderHorizontalGridLines(true)
+          //.legend(dc.legend().x(680).y(10).itemHeight(13).gap(5))
+          .brushOn(false)
+          .group(dataByDayGroup)
+          .xAxisLabel('Ano')
+          .yAxisLabel('Quat. Empréstimos');
+
+
+      dc.renderAll();
+  });
+
+</script>
+
+
+  
+  </body>
+
+</html>
