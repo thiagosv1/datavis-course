@@ -285,7 +285,7 @@
           .width(450)
           //.height(300)
           .margins({top: 10, right: 30, bottom: 40, left:50})
-          .x(d3.scaleBand())
+          .x(d3.scaleBand().domain(['C. CREDITO', 'CONSIGNADO', 'SINDICATO', 'SEGURADORA']))
           .xUnits(dc.units.ordinal)
           //.brushOn(false)
           .xAxisLabel('Tipo de Empréstimo')
